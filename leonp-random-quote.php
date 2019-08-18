@@ -184,7 +184,7 @@ if (!class_exists('LeonP_RandomQuote')) {
 
                     $random_quote = get_option("leonp_rq_q{$random_quote_index}");
 
-                    if ($random_quote) {
+                    if ($random_quote && !empty($random_quote)) {
                         array_push($quotes, $random_quote);
                     }
 
