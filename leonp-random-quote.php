@@ -82,7 +82,7 @@ if (!class_exists('LeonP_RandomQuote')) {
                 'leonp-rq',
                 'leonp_rq_section');
 
-            register_setting('leonp_rq', 'leonp_rq_count');
+            register_setting('leonp_rq', 'leonp_rq_count', array($this, 'quote_count_validation'));
 
             // multiple fields for quotes (defined by count)
             for ($i = 1; $i <= $this->quote_count; $i++) {
@@ -95,8 +95,24 @@ if (!class_exists('LeonP_RandomQuote')) {
                     'leonp_rq_section',
                     $i);
 
-                register_setting('leonp_rq', "leonp_rq_q{$i}");
+                register_setting('leonp_rq', "leonp_rq_q{$i}", array($this, "quote_input_validation"));
             }
+        }
+
+        public function quote_count_validation($count)
+        {
+
+            $parsed_count = intval($count);
+
+            if(!$parsed_count || $parsed_count < 1) return (string) $this->quote_count;
+
+            return $count;
+        }
+
+        public function quote_input_validation($quote)
+        {
+
+            return strip_tags($quote);
         }
 
         // render quote count input
@@ -152,7 +168,7 @@ if (!class_exists('LeonP_RandomQuote')) {
 
             $quote_amount = intval($rq_atts['count']);
 
-            if(!$quote_amount) $quote_amount = 1;
+            if (!$quote_amount) $quote_amount = 1;
 
             $iter_count_limit = $this->quote_count * $quote_amount;
 
@@ -180,7 +196,7 @@ if (!class_exists('LeonP_RandomQuote')) {
 
             foreach ($quotes as $quote) {
 
-                $final_quote_string .= '<p class="leonp-quote">' . $quote . '</p>';
+                $final_quote_string .= '<p class="leonp-quote">' . strip_tags($quote) . '</p>';
             }
 
             return '<div class="quote-container">' . $final_quote_string . '</div>';
