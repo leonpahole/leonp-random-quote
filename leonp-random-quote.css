@@ -1,0 +1,9 @@
+.leonp-quote {
+    font-weight: bold;
+    font-style: italic;
+    font-size: medium;
+}
+
+.quote-container{
+    background-color: rgba(255, 255, 136, 0.5);
+}
